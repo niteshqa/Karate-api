@@ -22,3 +22,19 @@ Feature: sample POST end-point
       | exp  |value | status |
       | abc  | 1    | 200    |
 
+# to test a post response array ( this endpoint will not work)
+  @sample
+  Scenario Outline: I want to validate api
+    * def payload = read ("data/request.json")
+    * def preCall = call read ('dummy.feature')
+    Given path '/api/users?page=2'
+    And param id = '123'
+    And request {"name": "<exp>"}
+    When method post
+    Then status <status>
+    And match response.view[*].aggregation[*].level == [<value>]
+    And match response.view[*].aggregation[*].value == [#notnull]
+    Examples:
+      | exp  |value | status |
+      | abc  | 1    | 201    |
+
