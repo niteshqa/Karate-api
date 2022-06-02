@@ -1,7 +1,7 @@
 Feature: sample get end-point
 
   Background:
-    * url 'https://reqres.in'
+    * url baseUrl
     * configure logPrettyRequest = true
     * configure logPrettyResponse = true
     * configure headers = {'Content-Type' : 'application/json'}
@@ -17,4 +17,17 @@ Feature: sample get end-point
     Examples:
       | exp                 | method | status | op              |
       | '/api/users?page=2' | get    | 200    | expectedResponse|
+
+  # sample test to validate data in json file by defining the value in scenario
+  @new
+  Scenario Outline: I want to validate name response from api
+    * def expectedResponse = read ("data/getResponseNew.json")
+    * def name = "<exp>"
+    Given path '/api/users?page=2'
+    When method get
+    Then status 200
+    And match response == expectedResponse
+    Examples:
+      | exp      |
+      | cerulean |
 
